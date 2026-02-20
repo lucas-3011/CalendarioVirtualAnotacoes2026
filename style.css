@@ -1045,6 +1045,6 @@ body.rotacionado .modal-anotacao-overlay {
     left: 0;
     width: 100vw;
     height: 100vh;
-    transform: rotate(-90deg);
+    transform: rotate(0deg);
     transform-origin: center center;
 }
