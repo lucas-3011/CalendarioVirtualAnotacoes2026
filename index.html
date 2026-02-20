@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calendário TJGO 2026 Virtual</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="overlay-orientacao">
+        <p id="overlay-orientacao-txt">Vire o dispositivo para a posição horizontal<br>para usar o calendário.</p>
+    </div>
+
+    <div id="overlay-preload"></div>
+
+    <div id="modal-aviso" class="modal-aviso-overlay" aria-hidden="true">
+        <div class="modal-card">
+            <p id="modal-mensagem"></p>
+            <button id="modal-ok" onclick="fecharModalAviso()">OK</button>
+        </div>
+    </div>
+
+    <div id="cal-wrapper">
+
+        <div id="bg"></div>
+
+        <!-- PÁGINAS PRELIMINARES -->
+        <div id="pagina-capa" class="pagina-preliminar">
+            <img src="img/capa.png" alt="Capa" class="pagina-preliminar-img">
+            <button class="btn-proxima-pagina" onclick="irParaPaginaCalendario()">Continuar &#8594;</button>
+        </div>
+
+        <div id="pagina-subcapa" class="pagina-preliminar" style="display:none;">
+            <img src="img/subcapa.png" alt="Subcapa" class="pagina-preliminar-img">
+            <div class="nav-preliminar">
+                <button onclick="irParaCapa()">&#8592; Voltar</button>
+                <button onclick="irParaCalendario()">Entrar no Calendário &#8594;</button>
+            </div>
+        </div>
+
+        <!-- CALENDÁRIO PRINCIPAL -->
+        <div id="pagina-calendario" style="display:none; flex:1; flex-direction:column; overflow:hidden; min-height:0;">
+
+            <header>
+                <h1>Calendário Virtual TJGO 2026</h1>
+            </header>
+
+            <nav class="meses-container" id="mesesContainer">
+                <button class="mes" onclick="irParaMes(0)">Janeiro</button>
+                <button class="mes" onclick="irParaMes(1)">Fevereiro</button>
+                <button class="mes" onclick="irParaMes(2)">Março</button>
+                <button class="mes" onclick="irParaMes(3)">Abril</button>
+                <button class="mes" onclick="irParaMes(4)">Maio</button>
+                <button class="mes" onclick="irParaMes(5)">Junho</button>
+                <button class="mes" onclick="irParaMes(6)">Julho</button>
+                <button class="mes" onclick="irParaMes(7)">Agosto</button>
+                <button class="mes" onclick="irParaMes(8)">Setembro</button>
+                <button class="mes" onclick="irParaMes(9)">Outubro</button>
+                <button class="mes" onclick="irParaMes(10)">Novembro</button>
+                <button class="mes" onclick="irParaMes(11)">Dezembro</button>
+            </nav>
+
+            <div class="layout-principal">
+
+                <main class="calendario-main">
+                    <div class="cal-glass-container" id="calContainer">
+
+                        <div class="cal-header-faixa">
+                            <div class="data-container">
+                                <span class="cal-mes-nome" id="calMesNome">Janeiro</span>
+                                <span class="cal-ano" id="calAno">2026</span>
+                            </div>
+
+                            <div class="tjgo-badge">
+                                <div class="logo-img">
+                                    <img src="img/LOGOTGOPNG.png" alt="Logo TJGO">
+                                </div>
+                                <div class="logo-textos">
+                                    <span class="linha-1">Poder Judiciário</span>
+                                    <span class="linha-2">Tribunal de Justiça do Estado de Goiás</span>
+                                    <span class="linha-3">Divisão de Impressão Digital e Gráfica</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grade-dias-semana">
+                            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+                        </div>
+
+                        <div id="grade-calendario" class="grade-calendario"></div>
+
+                    </div>
+
+                    <div class="controles-nav">
+                        <button id="btnAnterior" onclick="mesAnterior()">&#8592; Anterior</button>
+                        <div class="contador">
+                            <span id="mesAtualNum">1</span> / 12
+                        </div>
+                        <button id="btnProximo" onclick="proximoMes()">Próximo &#8594;</button>
+                    </div>
+                </main>
+
+                <aside class="painel-lateral" id="painelLateral">
+                    <div class="painel-abas">
+                        <button class="painel-aba ativa" id="abaNotas" onclick="trocarAba('notas')">Anotações</button>
+                        <button class="painel-aba" id="abaLixeira" onclick="trocarAba('lixeira')">Lixeira</button>
+                    </div>
+                    <div class="painel-lista" id="painelLista"></div>
+                    <div class="painel-lista" id="painelLixeira" style="display:none;"></div>
+                </aside>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="modal-anotacao" class="modal-anotacao-overlay" style="display:none;">
+        <div class="modal-anotacao-content">
+            <h3 id="modal-anotacao-titulo">Anotação</h3>
+            <textarea id="texto-anotacao" placeholder="Digite sua nota aqui..."></textarea>
+            <div class="modal-botoes">
+                <button onclick="fecharModalAnotacao()" class="btn-cancelar">Cancelar</button>
+                <button onclick="excluirNota()" class="btn-excluir" id="btnExcluir" style="display:none;">Excluir</button>
+                <button onclick="salvarNota()" class="btn-salvar">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Java.js"></script>
+</body>
+</html>

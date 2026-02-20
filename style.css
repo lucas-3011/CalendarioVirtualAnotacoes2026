@@ -1,0 +1,1050 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'BuloBold';
+    src: url('fonts/bulo-bold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'HelveticaNeue';
+    src: url('fonts/HelveticaNeueLTStd-MdCn.otf') format('opentype');
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #1a1a2e;
+}
+
+body {
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+#bg {
+    position: fixed;
+    inset: 0;
+    background-image: url('img/Fundo.jpg');
+    background-color: #1a1a2e;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 30, 0.45);
+}
+
+/* ================================================
+   MODAL DE AVISO
+   ================================================ */
+
+.modal-aviso-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-aviso-overlay[aria-hidden="true"] {
+    display: none;
+}
+
+.modal-card {
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    padding: 32px 28px 24px;
+    max-width: 320px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.modal-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.modal-card button {
+    padding: 10px 40px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 0.95rem;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-card button:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* ================================================
+   WRAPPER PRINCIPAL
+   ================================================ */
+
+#cal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.5s ease, width 0.5s ease, height 0.5s ease, top 0.5s ease, left 0.5s ease;
+}
+
+#cal-wrapper.bloqueado {
+    display: none;
+}
+
+/* ================================================
+   PÁGINAS PRELIMINARES (CAPA / SUBCAPA)
+   ================================================ */
+
+.pagina-preliminar {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    gap: 20px;
+}
+
+.pagina-preliminar-img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100% - 80px);
+    object-fit: contain;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    flex-shrink: 1;
+}
+
+.btn-proxima-pagina {
+    padding: 10px 28px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 0.95rem;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-proxima-pagina:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.nav-preliminar {
+    display: flex;
+    gap: 12px;
+}
+
+.nav-preliminar button {
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    font-size: 0.9rem;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-preliminar button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* ================================================
+   CABEÇALHO
+   ================================================ */
+
+header {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 5px 12px 2px;
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: clamp(0.65rem, 1.6vw, 1.4rem);
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,215,100,0.85) 50%, rgba(255,255,255,0.95) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.85)) drop-shadow(0 4px 10px rgba(0,0,0,0.65));
+}
+
+/* ================================================
+   MENU DE MESES
+   ================================================ */
+
+.meses-container {
+    flex-shrink: 0;
+    display: flex;
+    gap: 4px;
+    margin: 2px auto;
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    width: max-content;
+    max-width: 98%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    list-style: none;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.meses-container::-webkit-scrollbar {
+    display: none;
+}
+
+.mes {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    border-radius: 50px;
+    color: white;
+    font-size: clamp(0.55rem, 0.9vw, 0.78rem);
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    white-space: nowrap;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6);
+}
+
+.mes::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.4) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.mes:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.mes:hover::before,
+.mes:active::before {
+    opacity: 1;
+}
+
+.mes.ativo {
+    background: rgba(212, 175, 55, 0.4);
+    border-color: rgba(212, 175, 55, 0.9);
+    font-weight: 600;
+    color: #ffd700;
+}
+
+/* ================================================
+   LAYOUT PRINCIPAL (calendário + painel lateral)
+   ================================================ */
+
+.layout-principal {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    gap: 8px;
+    padding: 4px 8px;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+
+.calendario-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* ================================================
+   CONTAINER GLASSMORPHISM DO CALENDÁRIO
+   ================================================ */
+
+.cal-glass-container {
+    flex: 1;
+    min-height: 0;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ================================================
+   FAIXA DOURADA DO CABEÇALHO DO MÊS
+   ================================================ */
+
+.cal-header-faixa {
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #c9a227 0%, #e8c84a 40%, #d4af37 70%, #b8860b 100%);
+    padding: 6px 14px 6px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.data-container {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.cal-mes-nome {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.4rem, 3vw, 2.6rem);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    line-height: 1;
+}
+
+.cal-ano {
+    font-family: 'BuloBold', cursive;
+    font-size: clamp(1.2rem, 1.6vw, 2.2rem);
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.82);
+    letter-spacing: 2px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+.tjgo-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 4px 10px 4px 6px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    flex-shrink: 0;
+}
+
+.logo-img {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.logo-textos {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.linha-1 {
+    font-family: 'HelveticaNeue', sans-serif;
+    font-size: clamp(0.55rem, 0.95vw, 0.85rem);
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    line-height: 1.3;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.linha-2 {
+    font-family: 'HelveticaNeue', sans-serif;
+    font-size: clamp(0.42rem, 0.68vw, 0.62rem);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.2;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.linha-3 {
+    font-family: 'HelveticaNeue', sans-serif;
+    font-size: clamp(0.42rem, 0.68vw, 0.62rem);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.2;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ================================================
+   GRADE DOS DIAS DA SEMANA
+   ================================================ */
+
+.grade-dias-semana {
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.grade-dias-semana div {
+    font-family: 'BuloBold', cursive;
+    font-weight: 700;
+    font-size: clamp(0.7rem, 1vw, 0.95rem);
+    text-align: center;
+    padding: 5px 0;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.grade-dias-semana div:first-child {
+    color: rgba(255, 120, 120, 0.9);
+}
+
+.grade-dias-semana div:last-child {
+    color: rgba(120, 180, 255, 0.9);
+}
+
+/* ================================================
+   GRADE DO CALENDÁRIO
+   ================================================ */
+
+.grade-calendario {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 3px;
+    padding: 4px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ================================================
+   CÉLULA DE DIA
+   ================================================ */
+
+.dia {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    min-height: 0;
+}
+
+.dia:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.45);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    z-index: 5;
+}
+
+.dia.zoom-ativo {
+    transform: scale(1.2);
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(212, 175, 55, 0.9);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(212, 175, 55, 0.6);
+    z-index: 10;
+}
+
+.dia .num-dia {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(0.65rem, 1.3vw, 1.1rem);
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1;
+}
+
+.dia .feriado-nome {
+    font-size: clamp(0.38rem, 0.65vw, 0.58rem);
+    font-weight: 600;
+    text-align: center;
+    padding: 0 2px;
+    line-height: 1.2;
+    margin-top: 2px;
+}
+
+.dia.domingo .num-dia {
+    color: rgba(255, 120, 120, 0.95);
+}
+
+.dia.sabado .num-dia {
+    color: rgba(120, 180, 255, 0.95);
+}
+
+.dia.feriado .num-dia {
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.dia.feriado {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: rgba(212, 175, 55, 0.35);
+}
+
+.dia.feriado .feriado-nome {
+    color: rgba(255, 215, 0, 0.9);
+}
+
+.dia.tem-nota {
+    background: rgba(50, 120, 220, 0.22);
+    border-color: rgba(100, 160, 255, 0.5);
+}
+
+.dia.tem-nota::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #64a0ff;
+    box-shadow: 0 0 6px rgba(100, 160, 255, 0.8);
+}
+
+.dia.vazio {
+    background: transparent;
+    border: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+.dia.hoje .num-dia {
+    background: linear-gradient(135deg, #d4af37, #ffd700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dia.hoje {
+    border-color: rgba(212, 175, 55, 0.7);
+    box-shadow: inset 0 0 12px rgba(212, 175, 55, 0.2);
+}
+
+/* ================================================
+   CONTROLES DE NAVEGAÇÃO
+   ================================================ */
+
+.controles-nav {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+}
+
+.controles-nav button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 80px;
+    padding: 5px 14px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: clamp(0.6rem, 0.9vw, 0.78rem);
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.controles-nav button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.controles-nav button:disabled {
+    opacity: 0.25;
+    cursor: default;
+    pointer-events: none;
+}
+
+.contador {
+    font-size: clamp(0.6rem, 0.9vw, 0.78rem);
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    min-width: 50px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+/* ================================================
+   PAINEL LATERAL
+   ================================================ */
+
+.painel-lateral {
+    width: 160px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Abas do painel */
+.painel-abas {
+    flex-shrink: 0;
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.painel-aba {
+    flex: 1;
+    padding: 7px 4px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.55);
+    font-family: inherit;
+    font-size: clamp(0.5rem, 0.7vw, 0.62rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.painel-aba:hover {
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.painel-aba.ativa {
+    color: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, rgba(100, 160, 255, 0.25), rgba(50, 100, 200, 0.15));
+    border-bottom: 2px solid rgba(100, 160, 255, 0.7);
+}
+
+.painel-aba.ativa.lixeira-aba {
+    background: linear-gradient(135deg, rgba(220, 80, 80, 0.25), rgba(160, 40, 40, 0.15));
+    border-bottom-color: rgba(220, 100, 100, 0.7);
+}
+
+.painel-lista {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.painel-lista::-webkit-scrollbar {
+    width: 4px;
+}
+
+.painel-lista::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.painel-lista::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.painel-vazio {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.45);
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+.painel-grupo-mes {
+    font-size: clamp(0.58rem, 0.8vw, 0.7rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(212, 175, 55, 0.9);
+    padding: 4px 4px 2px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    margin-top: 4px;
+}
+
+.painel-item {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    padding: 7px 9px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.painel-item:hover {
+    background: rgba(100, 160, 255, 0.2);
+    border-color: rgba(100, 160, 255, 0.45);
+    transform: translateX(2px);
+}
+
+.painel-item-dia {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(0.6rem, 0.85vw, 0.75rem);
+    font-weight: 700;
+    color: #64a0ff;
+    margin-bottom: 2px;
+}
+
+.painel-item-texto {
+    font-size: clamp(0.55rem, 0.78vw, 0.68rem);
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.35;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Itens da lixeira */
+.lixeira-item {
+    background: rgba(180, 50, 50, 0.1);
+    border: 1px solid rgba(220, 100, 100, 0.2);
+    border-radius: 8px;
+    padding: 7px 9px;
+}
+
+.lixeira-item-dia {
+    font-size: clamp(0.6rem, 0.85vw, 0.75rem);
+    font-weight: 700;
+    color: rgba(255, 150, 150, 0.9);
+    margin-bottom: 2px;
+}
+
+.lixeira-item-texto {
+    font-size: clamp(0.55rem, 0.78vw, 0.68rem);
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.35;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 6px;
+}
+
+.lixeira-item-acoes {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.btn-restaurar {
+    flex: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(100, 200, 100, 0.4);
+    background: rgba(50, 150, 50, 0.2);
+    color: rgba(150, 255, 150, 0.9);
+    font-size: clamp(0.5rem, 0.7vw, 0.62rem);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-restaurar:hover {
+    background: rgba(50, 150, 50, 0.4);
+}
+
+.btn-excluir-permanente {
+    flex: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(220, 80, 80, 0.4);
+    background: rgba(180, 40, 40, 0.2);
+    color: rgba(255, 150, 150, 0.9);
+    font-size: clamp(0.5rem, 0.7vw, 0.62rem);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-excluir-permanente:hover {
+    background: rgba(200, 50, 50, 0.45);
+}
+
+/* ================================================
+   MODAL DE ANOTAÇÃO (GLASSMORPHISM)
+   ================================================ */
+
+.modal-anotacao-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-anotacao-content {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 28px;
+    width: 90%;
+    max-width: 520px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-anotacao-content h3 {
+    font-family: 'Dancing Script', 'Great Vibes', cursive;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.modal-anotacao-content textarea {
+    width: 100%;
+    height: 160px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    padding: 12px;
+    color: rgba(255, 255, 255, 0.95);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.modal-anotacao-content textarea:focus {
+    border-color: rgba(212, 175, 55, 0.7);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.modal-anotacao-content textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.modal-botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-salvar {
+    background: linear-gradient(135deg, #c9a227, #e8c84a);
+    color: #1a1a2e;
+    border: none;
+    padding: 9px 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4);
+}
+
+.btn-salvar:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-cancelar {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 9px 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-cancelar:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-excluir {
+    background: rgba(200, 50, 50, 0.2);
+    color: rgba(255, 150, 150, 0.9);
+    border: 1px solid rgba(220, 80, 80, 0.35);
+    padding: 9px 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-excluir:hover {
+    background: rgba(220, 60, 60, 0.38);
+    border-color: rgba(255, 100, 100, 0.55);
+}
+
+/* ================================================
+   PRÉ-CARREGAMENTO
+   ================================================ */
+
+#overlay-preload {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99998;
+}
+
+#overlay-preload.ativo {
+    display: block;
+}
+
+/* ================================================
+   OVERLAY DE ORIENTAÇÃO
+   — Mostrado quando touch + portrait
+   — 80% opacidade, permanente até rotacionar
+   ================================================ */
+
+#overlay-orientacao {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+}
+
+#overlay-orientacao.ativo {
+    display: flex;
+}
+
+#overlay-orientacao-txt {
+    font-size: clamp(0.9rem, 3vw, 1.3rem);
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.7;
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    max-width: 340px;
+}
+
+/* ================================================
+   MOBILE ROTACIONADO 90° — counter-rotate do modal
+   O wrapper é girado +90deg (portrait→landscape).
+   O modal precisa girar -90deg para ficar ereto.
+   width/height trocados para ocupar a tela visual.
+   ================================================ */
+
+body.rotacionado .modal-anotacao-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transform: rotate(-90deg);
+    transform-origin: center center;
+}
