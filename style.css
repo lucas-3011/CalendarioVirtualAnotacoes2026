@@ -344,7 +344,7 @@ h1 {
 .cal-header-faixa {
     flex-shrink: 0;
     background: linear-gradient(135deg, #c9a227 0%, #e8c84a 40%, #d4af37 70%, #b8860b 100%);
-    padding: 6px 14px 6px 14px;
+    padding: 20px 14px 20px 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -661,7 +661,7 @@ h1 {
    ================================================ */
 
 .painel-lateral {
-    width: 160px;
+    width: 200px;
     flex-shrink: 0;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(18px);
@@ -862,7 +862,7 @@ h1 {
    MODAL DE ANOTAÇÃO (GLASSMORPHISM)
    ================================================ */
 
-.modal-anotacao-overlay {
+.modal-anotacao-overlay { /* Fundo escurecido e desfocado atrás do modal */
     position: fixed;
     top: 0;
     left: 0;
@@ -1007,29 +1007,119 @@ h1 {
    — 80% opacidade, permanente até rotacionar
    ================================================ */
 
+/* CONTAINER PRINCIPAL (OVERLAY) */
 #overlay-orientacao {
-    display: none;
+    display: none; /* Alterado para flex via JS quando 'ativo' */
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.95) 100%);
     z-index: 99999;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 24px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
+/* ESTADO ATIVO */
 #overlay-orientacao.ativo {
     display: flex;
+    color: #fff;
+    user-select: none;
+    pointer-events: none;
 }
 
+/* TEXTO DE ORIENTAÇÃO */
 #overlay-orientacao-txt {
-    font-size: clamp(0.9rem, 3vw, 1.3rem);
-    color: rgba(255, 255, 255, 0.92);
-    line-height: 1.7;
-    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-    max-width: 340px;
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.6;
+    font-family: 'Montserrat', sans-serif;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    max-width: 320px;
+    margin-top: 25px; /* Espaço após a animação */
+}
+
+/* CONTAINER DA ANIMAÇÃO (O SEGREDO DA CENTRALIZAÇÃO) */
+#overlay-orientacao .device-rotate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    perspective: 1000px;
+}
+
+/* O APARELHO CELULAR */
+#overlay-orientacao .device-rotate .phone {
+    width: 68px;
+    height: 115px;
+    border-radius: 14px;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    position: relative;
+    background: #1a1a1a;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    transform-origin: center center;
+    /* Centralização absoluta no eixo */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* GATILHO DA ANIMAÇÃO */
+#overlay-orientacao.ativo .device-rotate .phone {
+    animation: device-tilt 2.6s ease-in-out infinite;
+}
+
+/* TELA INTERNA */
+#overlay-orientacao .device-rotate .phone .screen {
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    border-radius: 9px;
+    background: linear-gradient(180deg, #333, #000);
+}
+
+/* NOTCH E BOTÃO HOME */
+#overlay-orientacao .device-rotate .phone .notch {
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 5px;
+    border-radius: 0 0 6px 6px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+#overlay-orientacao .device-rotate .phone .home {
+    position: absolute;
+    bottom: 5px; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+/* LEGENDA PEQUENA ABAIXO DO CELULAR */
+#overlay-orientacao .device-rotate .rotate-hint {
+    margin-top: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* KEYFRAMES CORRIGIDOS */
+@keyframes device-tilt {
+    0%, 15% { transform: rotate(-90deg); }
+    40%, 60% { transform: rotate(0deg); }
+    70% { transform: rotate(0deg) translateY(-8px); }
+    85%, 100% { transform: rotate(0deg); }
+}
+
+/* ACESSIBILIDADE */
+@media (prefers-reduced-motion: reduce) {
+    #overlay-orientacao.ativo .device-rotate .phone {
+        animation: none;
+        transform: rotate(-90deg);
+    }
 }
 
 /* ================================================
