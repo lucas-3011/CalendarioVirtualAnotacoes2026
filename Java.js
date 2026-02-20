@@ -12,17 +12,25 @@ var feriados = {
     "2026-02-16": "Carnaval",
     "2026-02-17": "Carnaval",
     "2026-02-18": "Quarta de Cinzas",
-    "2026-04-03": "Sexta-Feira Santa",
+    "2026-04-01": "Semana Santa",
+    "2026-04-02": "Semana Santa",
+    "2026-04-03": "Semana Santa\nPaixão de Cristo",
+    "2026-04-04": "Semana Santa",
     "2026-04-05": "Páscoa",
     "2026-04-21": "Tiradentes",
     "2026-05-01": "Dia do Trabalho",
+    "2026-05-10": "Dia das Mães",
+    "2026-05-24": "Nossa Senhora Auxiliadora",
     "2026-06-04": "Corpus Christi",
-    "2026-07-26": "Aniversário de Goiânia",
+    "2026-07-26": "Nossa Sra. de Santana",
     "2026-09-07": "Independência do Brasil",
     "2026-10-12": "Nossa Sra. Aparecida",
+    "2026-10-24": "Aniversário de Goiânia",
+    "2026-10-28": "Dia do Servidor Público",
     "2026-11-02": "Finados",
     "2026-11-15": "Proclamação da República",
     "2026-11-20": "Consciência Negra",
+    "2026-12-08": "Dia da Justiça",
     "2026-12-25": "Natal"
 };
 
@@ -126,10 +134,14 @@ function renderizarMes(m) {
         cell.appendChild(numSpan);
 
         if (feriado) {
-            var ferNome = document.createElement("span");
-            ferNome.className   = "feriado-nome";
-            ferNome.textContent = feriado;
-            cell.appendChild(ferNome);
+            var linhas = Array.isArray(feriado) ? feriado : ("" + feriado).split(/<br\s*\/??>|\n/g);
+            linhas.forEach(function(l) {
+                if (!l) return;
+                var ferNome = document.createElement("span");
+                ferNome.className = "feriado-nome";
+                ferNome.textContent = l;
+                cell.appendChild(ferNome);
+            });
         }
 
         (function(d, mn, c) {
@@ -161,7 +173,14 @@ function abrirZoomEModal(dia, mes, celula) {
     var nota       = localStorage.getItem(chave);
     var nomeMes    = mesesNomes[mes];
     var ferKey     = feriadoKey(mes, dia);
-    var nomeFeriado = feriados[ferKey] ? " — " + feriados[ferKey] : "";
+    var nomeFeriadoRaw = feriados[ferKey];
+    var nomeFeriado = "";
+    if (nomeFeriadoRaw) {
+        var primeiraLinha = Array.isArray(nomeFeriadoRaw)
+            ? nomeFeriadoRaw[0]
+            : ("" + nomeFeriadoRaw).split(/<br\s*\/??>|\n/g)[0];
+        nomeFeriado = " — " + primeiraLinha;
+    }
 
     document.getElementById("modal-anotacao-titulo").textContent = "Dia " + dia + " de " + nomeMes + nomeFeriado;
     document.getElementById("texto-anotacao").value = nota || "";
@@ -402,7 +421,14 @@ function zoomDiaNoCalendario(mes, dia) {
             var nota       = localStorage.getItem(chave);
             var nomeMes    = mesesNomes[mes];
             var ferKey     = feriadoKey(mes, dia);
-            var nomeFeriado = feriados[ferKey] ? " — " + feriados[ferKey] : "";
+            var nomeFeriadoRaw = feriados[ferKey];
+            var nomeFeriado = "";
+            if (nomeFeriadoRaw) {
+                var primeiraLinha = Array.isArray(nomeFeriadoRaw)
+                    ? nomeFeriadoRaw[0]
+                    : ("" + nomeFeriadoRaw).split(/<br\s*\/??>|\n/g)[0];
+                nomeFeriado = " — " + primeiraLinha;
+            }
 
             document.getElementById("modal-anotacao-titulo").textContent = "Dia " + dia + " de " + nomeMes + nomeFeriado;
             document.getElementById("texto-anotacao").value = nota || "";
